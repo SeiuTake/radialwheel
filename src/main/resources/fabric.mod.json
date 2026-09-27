@@ -5,9 +5,10 @@
 	"name": "Radial Wheel",
 	"description": "按住功能键打开轮盘，每个扇区可触发任意快捷键（含其他模组）或执行指令，从而释放宝贵的键盘按键。",
 	"authors": [
-		"SeiuT"
+		"SeiuTake"
 	],
 	"license": "MIT",
+	"icon": "assets/radialwheel/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
