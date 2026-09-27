@@ -1,0 +1,60 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	mavenCentral()
+}
+
+// Allow pointing the dev client at another game directory, e.g.
+//   gradle runClient -PrunDir=E:/some/instance
+def devRunDir = project.findProperty('runDir') ?: 'run'
+
+loom {
+	runs {
+		client {
+			runDir devRunDir
+		}
+	}
+}
+
+dependencies {
+	// Minecraft 26.2 ships unobfuscated: no mappings dependency is needed any more.
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+	// fabric.mod.json contains UTF-8 text, keep it that way on every platform.
+	filteringCharset = 'UTF-8'
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+// Temporary probe task: verifies the key name resolver against the real Minecraft tables.
+tasks.register('keyProbe', JavaExec) {
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'dev.seiu.radialwheel.tools.KeyNameProbe'
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+	it.options.encoding = 'UTF-8'
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}

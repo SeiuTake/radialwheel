@@ -1,0 +1,28 @@
+# gradle / loom
+.gradle/
+build/
+run/
+logs/
+*.log
+
+# ide
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+out/
+
+# os
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# local stuff that must never be committed
+*.jks
+*.keystore
+env.sh
